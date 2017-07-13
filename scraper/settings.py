@@ -67,6 +67,15 @@ DEFAULT_REQUEST_HEADERS = {
 #ITEM_PIPELINES = {
 #    'scraper.pipelines.ScraperPipeline': 300,
 #}
+ITEM_PIPELINES = {
+    'scrapyelasticsearch.scrapyelasticsearch.ElasticSearchPipeline': 500
+}
+
+ELASTICSEARCH_SERVERS = ['http://elastic:changeme@localhost:9200']
+ELASTICSEARCH_INDEX = 'assessor'
+ELASTICSEARCH_INDEX_DATE_FORMAT = '%Y-%m'
+ELASTICSEARCH_TYPE = 'property'
+ELASTICSEARCH_UNIQ_KEY = 'property_key'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

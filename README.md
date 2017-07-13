@@ -1,8 +1,8 @@
 # assessor-scraper
 
 The goal of this project is to transform the data from the Orleans Parish
-Assessor's Office [website](http://nolaassessor.com/) into a format that is
-better suited for analysis.
+Assessor's Office [website](http://nolaassessor.com/) into formats that
+are better suited for data analysis.
 
 ## development environment setup
 
@@ -39,10 +39,21 @@ next_page = response.xpath('//td[@class="header_link"]/a/@href').extract_first()
 ```
 
 ### Running the spider
-Running the spider from the command line will crawl the assessors website and [output the data](https://doc.scrapy.org/en/latest/topics/feed-exports.html) to a file
-format of your choice.
+Running the spider from the command line will crawl the assessors website and
+[output the data](https://doc.scrapy.org/en/latest/topics/feed-exports.html) to a destination of your choice.
 
+By default, the spider will output data to elasticsearch, which is configured
+in `scraper/settings.py`. You can use a hosted elasticsearch instance or run one locally using
+[Docker](https://store.docker.com/search?type=edition&offering=community):
+
+To run the spider,
+```
+scrapy runspider scraper/spiders/assessment_spider.py
+```
+> Warning: this will take a long time to run...you can kill the process with ctrl+c
+
+To run the spider and output to a csv
 ```
 scrapy runspider scraper/spiders/assessment_spider.py -o output.csv
 ```
-> Warning: this may take a long time...you can kill the process with ctrl+c
+

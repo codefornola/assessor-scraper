@@ -5,6 +5,7 @@ cffi==1.10.0
 constantly==15.1.0
 cryptography==1.9
 cssselect==1.0.1
+elasticsearch==5.4.0
 hyperlink==17.2.1
 idna==2.5
 incremental==17.5.0
@@ -17,8 +18,10 @@ PyDispatcher==2.0.5
 pyOpenSSL==17.0.0
 queuelib==1.4.2
 Scrapy==1.4.0
+ScrapyElasticSearch==0.8.9
 service-identity==17.0.0
 six==1.10.0
 Twisted==17.5.0
+urllib3==1.21.1
 w3lib==1.17.0
 zope.interface==4.4.2

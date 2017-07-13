@@ -6,14 +6,29 @@
 import scrapy
 
 class Property(scrapy.Item):
-    location_address = scrapy.Field()
+    property_key = scrapy.Field()
     owner_name = scrapy.Field()
-    owner_mailing_address = scrapy.Field()
-    tax_bill_number = scrapy.Field()
+    todays_date = scrapy.Field()
+    mailing_address = scrapy.Field()
     municipal_district = scrapy.Field()
+    location_address = scrapy.Field()
+    longitude = scrapy.Field()
+    latitude = scrapy.Field()
+    tax_bill_number = scrapy.Field()
     property_class = scrapy.Field()
+    special_tax_district = scrapy.Field()
+    subdivision_name = scrapy.Field()
     land_area_sq_ft = scrapy.Field()
+    zoning_district = scrapy.Field()
     building_area_sq_ft = scrapy.Field()
+    square = scrapy.Field()
+    lot = scrapy.Field()
+    book = scrapy.Field()
+    folio = scrapy.Field()
+    line = scrapy.Field()
+    parcel_map = scrapy.Field()
+    legal_description = scrapy.Field()
+
 
 class PropertyValue(scrapy.Item):
     year = scrapy.Field()
