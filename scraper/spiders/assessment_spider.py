@@ -8,11 +8,14 @@ import requests
 
 pp = pprint.PrettyPrinter()
 
+URL = "http://qpublic9.qpublic.net/la_orleans_display.php?KEY={}"
+
 # all spiders must subclass scrapy.Spider
 # see: https://doc.scrapy.org/en/latest/topics/spiders.html#scrapy.spiders.Spider
 class AssessmentSpider(scrapy.Spider):
     name = "assessment_spider"
-    start_urls = ['http://qpublic9.qpublic.net/la_orleans_display.php?KEY=2336-OCTAVIAST']
+    f = open('parcel_ids.txt')
+    start_urls = [URL.format(pid.strip()) for pid in f.readlines()]
 
     def parse(self, response):
         # replace all br tags with newline characters
@@ -34,9 +37,6 @@ class AssessmentSpider(scrapy.Spider):
         lng,lat = resp.json()['features'][0]['geometry']['coordinates']
         property['longitude'] = lng
         property['latitude'] = lat
+        property['location'] = [lng, lat]
         # pp.pprint(property)
         yield Property(property)
-        # crawl to next page
-        next_page = response.xpath('//td[@class="header_link"]/a/@href').extract_first()
-        if next_page is not None:
-            yield response.follow(next_page, self.parse)

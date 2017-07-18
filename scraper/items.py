@@ -14,6 +14,7 @@ class Property(scrapy.Item):
     location_address = scrapy.Field()
     longitude = scrapy.Field()
     latitude = scrapy.Field()
+    location = scrapy.Field()
     tax_bill_number = scrapy.Field()
     property_class = scrapy.Field()
     special_tax_district = scrapy.Field()
@@ -28,6 +29,7 @@ class Property(scrapy.Item):
     line = scrapy.Field()
     parcel_map = scrapy.Field()
     legal_description = scrapy.Field()
+    assessment_area = scrapy.Field()
 
 
 class PropertyValue(scrapy.Item):
