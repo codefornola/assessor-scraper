@@ -12,8 +12,6 @@ class Property(scrapy.Item):
     mailing_address = scrapy.Field()
     municipal_district = scrapy.Field()
     location_address = scrapy.Field()
-    longitude = scrapy.Field()
-    latitude = scrapy.Field()
     location = scrapy.Field()
     tax_bill_number = scrapy.Field()
     property_class = scrapy.Field()
