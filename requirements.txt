@@ -1,7 +1,10 @@
 asn1crypto==0.22.0
 attrs==17.2.0
 Automat==0.6.0
+beautifulsoup4==4.6.0
+certifi==2017.4.17
 cffi==1.10.0
+chardet==3.0.4
 constantly==15.1.0
 cryptography==1.9
 cssselect==1.0.1
@@ -16,7 +19,9 @@ pyasn1-modules==0.0.9
 pycparser==2.17
 PyDispatcher==2.0.5
 pyOpenSSL==17.0.0
+pyproj==1.9.5.1
 queuelib==1.4.2
+requests==2.18.1
 Scrapy==1.4.0
 ScrapyElasticSearch==0.8.9
 service-identity==17.0.0
