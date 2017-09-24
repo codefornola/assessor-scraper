@@ -46,11 +46,14 @@ By default, the spider will output data to elasticsearch, which is configured
 in `scraper/settings.py`. You can use a hosted elasticsearch instance or run one locally using
 [Docker](https://store.docker.com/search?type=edition&offering=community):
 
+> Important Note: Scraping should always be done responsibly so check the [robots.txt](http://www.robotstxt.org/robotstxt.html) file to ensure the site doesn't explicitly instruct crawlers to not crawl.  Also when running the scraper, be careful not to cause unexpected load to the assessors website - consider running during non-peak hours or profiling the latency to ensure you aren't overwhelming the servers.
+
+
 To run the spider,
 ```
 scrapy runspider scraper/spiders/assessment_spider.py
 ```
-> Warning: this will take a long time to run...you can kill the process with ctrl+c
+> Warning: this will take a long time to run...you can kill the process with ctrl+c.
 
 To run the spider and output to a csv
 ```
