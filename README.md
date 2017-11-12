@@ -38,6 +38,24 @@ owner.extract()
 next_page = response.xpath('//td[@class="header_link"]/a/@href').extract_first()
 ```
 
+### Get all the parcel ids
+
+Getting a list of parcel ids allows us to build urls for every property
+so we can scrape the data for that parcel.  These parcel ids are used
+in the url like `http://qpublic9.qpublic.net/la_orleans_display.php?KEY=701-POYDRASST`,
+where `701-POYDRASST` is the parcel id.
+
+Running the `parcel_id_extractor.py` script will cleverly use the owner search to
+extract all available parcel ids, then save them in a file `parcel_ids.txt`.
+
+The file is checked in to the repo, but if you want to run it yourself
+to update it with the latest, run 
+
+```
+python parcel_id_extractor.py
+```
+
+
 ### Running the spider
 Running the spider from the command line will crawl the assessors website and
 [output the data](https://doc.scrapy.org/en/latest/topics/feed-exports.html) to a destination of your choice.
