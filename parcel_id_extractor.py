@@ -1,26 +1,27 @@
 # -*- coding: utf-8 -*-
 
-"""
-Fuzzes the owner search to extract all available parcel ids
-"""
-
 import os
 import threading
 from queue import Queue
 from string import ascii_uppercase, digits
-from bs4 import BeautifulSoup
+
 import requests
+from bs4 import BeautifulSoup
 
 SEARCH_URL = "http://qpublic9.qpublic.net/la_orleans_alsearch.php?" \
              "searchType=owner_name&INPUT={}&BEGIN={}"
 
 Q = Queue()
 
+
 class ParcelIdExtractor(object):
+    """
+    Fuzzes the owner search to extract all available parcel ids
+    """
 
     def __init__(self):
-         self.parcel_ids = frozenset()
-         self.lock = threading.Lock()
+        self.parcel_ids = frozenset()
+        self.lock = threading.Lock()
 
     def update_ids(self, ids):
         """Use a lock to prevent multiple threads from updating parcel_ids"""
@@ -47,21 +48,21 @@ class ParcelIdExtractor(object):
         url = SEARCH_URL.format(search_term, begin)
         print('{} searching {}'.format(thread, url))
         r = requests.get(url)
-        if ('No Records Found.' in r.text):
+        if 'No Records Found.' in r.text:
             return
         else:
             soup = BeautifulSoup(r.text, 'html.parser')
             pids = [td.a.text for td in soup.select('td.search_value')
                     if td.a is not None and td.a.text != 'Map It']
-            if (len(pids) > 0):
+            if len(pids) > 0:
                 self.update_ids(pids)
                 self.search(search_term, begin + len(pids))
 
     def process_queue(self):
-      while not Q.empty():
-        term = Q.get()
-        self.search(term)
-        Q.task_done()
+        while not Q.empty():
+            term = Q.get()
+            self.search(term)
+            Q.task_done()
 
     def main(self, file_name='parcel_ids.txt', num_worker_threads=10):
         try:
@@ -81,6 +82,7 @@ class ParcelIdExtractor(object):
                     f.write(id + os.linesep)
         except Exception as error:
             print(error)
+
 
 if __name__ == '__main__':
     ParcelIdExtractor().main()
