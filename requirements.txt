@@ -14,6 +14,7 @@ idna==2.5
 incremental==17.5.0
 lxml==3.8.0
 parsel==1.2.0
+psycopg2==2.7.3.2
 pyasn1==0.2.3
 pyasn1-modules==0.0.9
 pycparser==2.17
@@ -26,6 +27,7 @@ Scrapy==1.4.0
 ScrapyElasticSearch==0.8.9
 service-identity==17.0.0
 six==1.10.0
+SQLAlchemy==1.1.15
 Twisted==17.5.0
 urllib3==1.21.1
 w3lib==1.17.0
