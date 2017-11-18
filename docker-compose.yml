@@ -1,5 +1,13 @@
 version: '2'
 services:
+  db:
+    image: postgres:alpine
+    restart: always
+    environment:
+      POSTGRES_USER: assessor
+      POSTGRES_PASSWORD: assessor
+    ports:
+      - 54321:5432
   elasticsearch1:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.5.0
     container_name: elasticsearch1

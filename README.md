@@ -60,8 +60,8 @@ python parcel_id_extractor.py
 Running the spider from the command line will crawl the assessors website and
 [output the data](https://doc.scrapy.org/en/latest/topics/feed-exports.html) to a destination of your choice.
 
-By default, the spider will output data to elasticsearch, which is configured
-in `scraper/settings.py`. You can use a hosted elasticsearch instance or run one locally using
+By default, the spider will output data to a postgres database, which is configured
+in `scraper/settings.py`. You can use a hosted postgres instance or run one locally using
 [Docker](https://store.docker.com/search?type=edition&offering=community):
 
 > Important Note: Scraping should always be done responsibly so check the [robots.txt](http://www.robotstxt.org/robotstxt.html) file to ensure the site doesn't explicitly instruct crawlers to not crawl.  Also when running the scraper, be careful not to cause unexpected load to the assessors website - consider running during non-peak hours or profiling the latency to ensure you aren't overwhelming the servers.
