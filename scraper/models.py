@@ -5,7 +5,7 @@ from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 
-import settings
+from scraper import settings
 
 Base = declarative_base()
 
