@@ -78,3 +78,12 @@ To run the spider and output to a csv
 scrapy runspider scraper/spiders/assessment_spider.py -o output.csv
 ```
 
+#### Running on Heroku
+You can run the scraper on Heroku by scaling up the worker dyno:
+
+```
+heroku ps:scale worker=1
+```
+
+See [the Heroku docs](https://devcenter.heroku.com/articles/getting-started-with-python#introduction) for more info on how to deploy Python code.
+
