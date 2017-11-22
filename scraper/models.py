@@ -30,7 +30,7 @@ def create_tables(engine):
 
 
 class Property(Base):
-    __tablename__ = 'property'
+    __tablename__ = 'properties'
 
     id = Column(Integer, primary_key=True)
     property_key = Column(String, nullable=False)
