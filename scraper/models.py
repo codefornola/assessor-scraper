@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import os
+import logging
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.declarative import declarative_base
@@ -12,10 +14,15 @@ Base = declarative_base()
 
 def db_connect():
     """
-    Connect to database using settings from settings.py.
     Returns sqlalchemy engine instance
     """
-    return create_engine(URL(**settings.DATABASE))
+    if 'DATABASE_URL' in os.environ:
+        DATABASE_URL = os.environ['DATABASE_URL']
+        logging.debug("Connecting to %s", URL)
+    else:
+        DATABASE_URL = URL(**settings.DATABASE)
+        logging.debug("Connecting with settings %s", DATABASE_URL)
+    return create_engine(DATABASE_URL)
 
 
 def create_tables(engine):
