@@ -3,6 +3,7 @@
 import logging
 import pprint
 import re
+import os 
 from urllib.parse import urlparse, parse_qs
 
 import requests
@@ -63,18 +64,20 @@ class AssessmentSpider(scrapy.Spider):
 
     @staticmethod
     def geocode_address(address):
-        resp = requests.get(
-            'https://search.mapzen.com/v1/search/structured',
-            params={'api_key': 'mapzen-hfgbW3U', 'size': 1,
-                    'locality': 'New Orleans', 'region': 'LA',
-                    'address': address})
-        res = resp.json()
-        if res['features'][0]['properties']['match_type'] == 'fallback':
-            logging.warning("Could not get coordinates for " + address)
-            return
-        else:
-            lng, lat = res['features'][0]['geometry']['coordinates']
-            return [lng, lat]
+        if 'MAPZEN_API_KEY' in os.environ:
+            MAPZEN_API_KEY = os.environ['MAPZEN_API_KEY']
+            resp = requests.get(
+                'https://search.mapzen.com/v1/search/structured',
+                params={'api_key': MAPZEN_API_KEY, 'size': 1,
+                        'locality': 'New Orleans', 'region': 'LA',
+                        'address': address})
+            res = resp.json()
+            if res['features'][0]['properties']['match_type'] == 'fallback':
+                logging.warning("Could not get coordinates for " + address)
+                return
+            else:
+                lng, lat = res['features'][0]['geometry']['coordinates']
+                return [lng, lat]
 
     def parse_property_info(self, response):
         hdrs = [h.extract().strip() for h in response.xpath('//td[@class="owner_header"]/font/text()')]

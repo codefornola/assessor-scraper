@@ -79,11 +79,15 @@ scrapy runspider scraper/spiders/assessment_spider.py -o output.csv
 ```
 
 #### Running on Heroku
-You can run the scraper on Heroku by scaling up the worker dyno:
+Set required environment variables:
+```
+heroku config:set DATABASE_URL=postgres://user:pass@host:5432/assessordb
+heroku config:set MAPZEN_API_KEY=mapzen-abc123
+```
 
+You can run the scraper on Heroku by scaling up the worker dyno:
 ```
 heroku ps:scale worker=1
 ```
 
 See [the Heroku docs](https://devcenter.heroku.com/articles/getting-started-with-python#introduction) for more info on how to deploy Python code.
-

@@ -63,7 +63,7 @@ class PropertyValue(Base):
     __tablename__ = 'property_values'
 
     id = Column(Integer, primary_key=True)
-    property_id = Column(Integer, ForeignKey('property.id'))
+    property_id = Column(Integer, ForeignKey('properties.id'))
     year = Column(String)
     land_value = Column(String)
     building_value = Column(String)
@@ -83,7 +83,7 @@ class PropertyTransfer(Base):
     __tablename__ = 'property_transfers'
 
     id = Column(Integer, primary_key=True)
-    property_id = Column(Integer, ForeignKey('property.id'))
+    property_id = Column(Integer, ForeignKey('properties.id'))
     sale_transfer_date = Column(String)
     price = Column(String)
     grantor = Column(String)
