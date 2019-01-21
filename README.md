@@ -38,6 +38,9 @@ owner.extract()
 next_page = response.xpath('//td[@class="header_link"]/a/@href').extract_first()
 ```
 
+### Set up the database
+Docs on setting up and making changes to the database are [here](alembic/README)
+
 ### Get all the parcel ids
 
 Getting a list of parcel ids allows us to build urls for every property

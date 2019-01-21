@@ -1,1 +1,18 @@
 Generic single-database configuration.
+
+# Creating db
+- `createuser -d -P assessor`
+- `createdb -U assessor assessor`
+
+# Updating db
+From within the `assessor-scraper/alembic` directory, run:
+
+- `alembic upgrade head`
+
+# Autogenerating new migration
+After making changes to scraper/models.py you'll need to create a database migration to allow others
+to update their db with new fields.
+
+Make sure to include a description of changes:
+
+- `alembic revision --autogenerate -m description_of_changes`
