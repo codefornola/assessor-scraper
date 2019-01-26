@@ -22,7 +22,7 @@ class Property(scrapy.Item):
     zoning_district = scrapy.Field()
     building_area_sq_ft = scrapy.Field()
     square = scrapy.Field()
-    lot = scrapy.Field()
+    lot_folio = scrapy.Field()
     book = scrapy.Field()
     folio = scrapy.Field()
     line = scrapy.Field()
@@ -31,3 +31,4 @@ class Property(scrapy.Item):
     assessment_area = scrapy.Field()
     sales = scrapy.Field()
     values = scrapy.Field()
+    revised_bldg_area_sqft = scrapy.Field()

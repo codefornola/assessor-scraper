@@ -80,7 +80,7 @@ ELASTICSEARCH_UNIQ_KEY = 'property_key'
 DATABASE = {
     'drivername': 'postgres',
     'host': 'localhost',
-    'port': '54321',
+    'port': '5432',
     'username': 'assessor',
     'password': 'assessor',
     'database': 'assessor'
