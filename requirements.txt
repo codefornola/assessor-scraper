@@ -1,3 +1,4 @@
+alembic==1.0.6
 asn1crypto==0.22.0
 attrs==17.2.0
 Automat==0.6.0

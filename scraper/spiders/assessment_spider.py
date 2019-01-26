@@ -82,7 +82,7 @@ class AssessmentSpider(scrapy.Spider):
     def parse_property_info(self, response):
         hdrs = [h.extract().strip() for h in response.xpath('//td[@class="owner_header"]/font/text()')]
         vals = [v.extract().strip() for v in response.xpath('//td[@class="owner_value"]/text()')]
-        keys = [re.sub(r"\(|\)", "", h.lower().replace("\'", "")).replace(" ", "_").strip() for h in hdrs]
+        keys = [self._clean_key(h) for h in hdrs]
         info = dict(zip(keys, vals))
         # get href to parcel map if it exists
         links = response.xpath('//td[@class="owner_value"]/a[contains(@href,"extent")]/@href')
@@ -97,7 +97,7 @@ class AssessmentSpider(scrapy.Spider):
 
     def parse_property_sales(self, response):
         hdrs = response.css('td[class="sales_header"] > font::text').extract()
-        keys = [h.lower().replace("/", "_").replace(" ", "_") for h in hdrs]
+        keys = [self._clean_key(h) for h in hdrs]
         value_info = response.css('td[class="sales_value"]').xpath('./text()').extract()
         values = [v.replace('\xa0', '').strip().replace('      ', '') for v in value_info]
         sales = []
@@ -106,9 +106,16 @@ class AssessmentSpider(scrapy.Spider):
             sales.append(dict(zip(keys, sale)))
         return sales
 
+    @staticmethod
+    def _clean_key(key):
+        cleaned_key = re.sub(r"[\(|\)\']", "", key.lower())
+        cleaned_key = re.sub(r"[/ \n]", "_", cleaned_key)
+        cleaned_key = re.sub(r"_+", "_", cleaned_key)
+        return cleaned_key.strip()
+
     def parse_property_values(self, response):
         hdrs = response.css('td[class="tax_header"] > font::text').extract()
-        keys = [h.lower().replace("\n", "_").replace(" ", "_") for h in hdrs]
+        keys = [self._clean_key(h) for h in hdrs]
         value_info = response.css('.tax_value').xpath('./text()').extract()
         values = [v.replace('\xa0', '').replace(' ', '') for v in value_info]
         special_treatment_info = response.css('.tax_value').xpath('./font').extract()
