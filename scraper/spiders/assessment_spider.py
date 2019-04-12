@@ -81,7 +81,11 @@ class AssessmentSpider(scrapy.Spider):
 
     def parse_property_info(self, response):
         hdrs = [h.extract().strip() for h in response.xpath('//td[@class="owner_header"]/font/text()')]
-        vals = [v.extract().strip() for v in response.xpath('//td[@class="owner_value"]/text()')]
+        value_cells = response.xpath('//td[@class="owner_value"]')
+        value_texts = [self._extract_text_from_value_cell(value_cell) for value_cell in value_cells]
+        value_fonts = [self._extract_font_from_value_cell(value_cell) for value_cell in value_cells]
+        value_hrefs = [self._extract_href_from_value_cell(value_cell) for value_cell in value_cells]
+        vals = [' '.join([v1, v2, v3]).strip() for v1, v2, v3 in zip(value_texts, value_fonts, value_hrefs)]
         keys = [self._clean_key(h) for h in hdrs]
         info = dict(zip(keys, vals))
         # get href to parcel map if it exists
@@ -94,6 +98,18 @@ class AssessmentSpider(scrapy.Spider):
             logging.warning("No parcel map link for " + info['location_address'])
             info['location'] = self.geocode_address(info['location_address'])
         return info
+
+    @staticmethod
+    def _extract_text_from_value_cell(value_cell):
+        return '\n'.join([v.extract().strip() for v in value_cell.xpath('text()')])
+
+    @staticmethod
+    def _extract_font_from_value_cell(value_cell):
+        return '\n'.join([v.extract().strip() for v in value_cell.xpath('font/text()')])
+
+    @staticmethod
+    def _extract_href_from_value_cell(value_cell):
+        return '\n'.join([v.extract().strip() for v in value_cell.xpath('a/@href')])
 
     def parse_property_sales(self, response):
         hdrs = response.css('td[class="sales_header"] > font::text').extract()
