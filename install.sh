@@ -16,7 +16,7 @@ sudo -u postgres psql -c "grant all privileges on database assessor to assessor"
 
 sudo pip install virtualenv
 
-git clone https://github.com/dstuck/assessor-scraper.git
+git clone https://github.com/codefornola/assessor-scraper.git
 
 virtualenv -p python3 venv_scraper
 
