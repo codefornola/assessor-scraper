@@ -94,3 +94,11 @@ heroku ps:scale worker=1
 ```
 
 See [the Heroku docs](https://devcenter.heroku.com/articles/getting-started-with-python#introduction) for more info on how to deploy Python code.
+
+#### Running in aws with Terraform
+1) Install terraform
+2) `cd terraform`
+3) `terraform init`
+4) `terraform plan`
+5) `terraform apply`
+6) `ssh ubuntu@{public_dns}`
