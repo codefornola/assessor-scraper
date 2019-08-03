@@ -11,8 +11,10 @@ import scrapy
 from pyproj import Proj, transform
 
 from scraper.items import Property
+from scrapy.exceptions import DropItem
 
 logging.getLogger('scrapy').setLevel(logging.WARNING)
+logging.getLogger('scrapy.extensions.throttle').setLevel(logging.INFO)
 logging.getLogger('urllib3').setLevel(logging.WARNING)
 pp = pprint.PrettyPrinter()
 
@@ -36,13 +38,18 @@ class AssessmentSpider(scrapy.Spider):
         response = response.replace(body=re.sub(r"<br\s*[\/]?>", "\n", response.body.decode('utf=8')))
         property_key = response.url.split('=')[1].replace('&', '')
         # logging.debug("Parsing property_key: %s", property_key)
-        property_info = self.parse_property_info(response)
-        property_values = self.parse_property_values(response)
-        property_sales = self.parse_property_sales(response)
-        property_info['property_key'] = property_key
-        property_info['sales'] = property_sales
-        property_info['values'] = property_values
-        yield Property(property_info)
+        if 'No Data at this time' in response.text:
+            msg = "No data for " + response.url
+            logging.warning(msg)
+            raise DropItem(msg)
+        else:
+            property_info = self.parse_property_info(response)
+            property_values = self.parse_property_values(response)
+            property_sales = self.parse_property_sales(response)
+            property_info['sales'] = property_sales
+            property_info['values'] = property_values
+            property_info['property_key'] = property_key
+            yield Property(property_info)
 
     @staticmethod
     def get_address_location(parcel_map_link):
@@ -62,23 +69,6 @@ class AssessmentSpider(scrapy.Spider):
         out_proj = Proj(init='epsg:4326')
         return transform(in_proj, out_proj, midpoint[0], midpoint[1])
 
-    @staticmethod
-    def geocode_address(address):
-        if 'MAPZEN_API_KEY' in os.environ:
-            MAPZEN_API_KEY = os.environ['MAPZEN_API_KEY']
-            resp = requests.get(
-                'https://search.mapzen.com/v1/search/structured',
-                params={'api_key': MAPZEN_API_KEY, 'size': 1,
-                        'locality': 'New Orleans', 'region': 'LA',
-                        'address': address})
-            res = resp.json()
-            if res['features'][0]['properties']['match_type'] == 'fallback':
-                logging.warning("Could not get coordinates for " + address)
-                return
-            else:
-                lng, lat = res['features'][0]['geometry']['coordinates']
-                return [lng, lat]
-
     def parse_property_info(self, response):
         hdrs = [h.extract().strip() for h in response.xpath('//td[@class="owner_header"]/font/text()')]
         value_cells = response.xpath('//td[@class="owner_value"]')
@@ -94,9 +84,6 @@ class AssessmentSpider(scrapy.Spider):
             parcel_map_link = links[0].extract()
             [lng, lat] = self.get_address_location(parcel_map_link)
             info['location'] = [lng, lat]
-        else:
-            logging.warning("No parcel map link for " + info['location_address'])
-            info['location'] = self.geocode_address(info['location_address'])
         return info
 
     @staticmethod

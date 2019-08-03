@@ -26,20 +26,25 @@ pip install -r requirements.txt
 
 ## Getting started
 
+### Set up the database
+By default, the scraper is setup to load data into a PostgreSQL database.
+Docs on setting up and making changes to the database are [here](alembic/README).
+You can quickly get the database running locally using [Docker](https://store.docker.com/search?type=edition&offering=community).
+```
+docker-compose up -d db
+```
+
 If you want to explore how to extract data using scrapy, use the [scrapy
 shell](https://doc.scrapy.org/en/latest/intro/tutorial.html#extracting-data) to interactively
 work with the response.
 
 For example,
 ```
-scrapy shell http://qpublic9.qpublic.net/la_orleans_display.php?KEY=2336-OCTAVIAST
-owner = response.xpath('//td[@class="owner_value"]/text()')[0]
-owner.extract()
-next_page = response.xpath('//td[@class="header_link"]/a/@href').extract_first()
+scrapy shell http://qpublic9.qpublic.net/la_orleans_display.php?KEY=1500-SUGARBOWLDR
+owner = response.xpath('//td[@class="owner_value"]/text()').get()
+total_value = response.xpath('//td[@class="tax_value"]/text()')[3].get().strip()
+next_page = response.xpath('//td[@class="header_link"]/a/@href').get()
 ```
-
-### Set up the database
-Docs on setting up and making changes to the database are [here](alembic/README)
 
 ### Get all the parcel ids
 
@@ -85,7 +90,6 @@ scrapy runspider scraper/spiders/assessment_spider.py -o output.csv
 Set required environment variables:
 ```
 heroku config:set DATABASE_URL=postgres://user:pass@host:5432/assessordb
-heroku config:set MAPZEN_API_KEY=mapzen-abc123
 ```
 
 You can run the scraper on Heroku by scaling up the worker dyno:
