@@ -12,7 +12,7 @@ setup(
         "psycopg2==2.7.3.2",
         "pyproj",
         "requests",
-        "Scrapy==1.4.0",
+        "Scrapy==2.6.1",
         "SQLAlchemy==1.1.15",
     ],
     zip_safe=False
